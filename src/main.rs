@@ -23,6 +23,20 @@ fn main() -> std::io::Result<()> {
     Ok(())
 }
 
+/// Moves files from a source directory to separate destination directories based on their file extensions.//+
+/////+
+/// This function reads all files from the source directory, determines their file extensions, and moves them to//+
+/// the corresponding destination directory (photos or videos). It uses multithreading to improve performance.//+
+/////+
+/// # Parameters//+
+/////+
+/// * `source_directory` - A reference to a `&str` representing the source directory where the files are located.//+
+/// * `destination_directory_photos` - A reference to a `&str` representing the destination directory for photos.//+
+/// * `destination_directory_videos` - A reference to a `&str` representing the destination directory for videos.//+
+/////+
+/// # Return Value//+
+/////+
+/// Returns a `Result` indicating whether the file movement was successful.//+
 fn move_files_to_destination_directories(
     source_directory: &str,
     destination_directory_photos: &str,
@@ -76,6 +90,19 @@ fn move_files_to_destination_directories(
     Ok(())
 }
 
+/// Moves a file from the source path to the destination directory.
+///
+/// # Parameters
+///
+/// * `source_path` - A `PathBuf` representing the source path of the file to be moved.
+/// * `destination_directory` - A `&str` representing the destination directory where the file should be moved.
+///
+/// # Return Value
+///
+/// Returns a `Result` indicating whether the file was successfully moved.
+///
+/// * `Ok(())` - If the file was moved successfully.
+/// * `Err(e)` - If an error occurred during the file movement, where `e` is the associated error.
 fn move_file(source_path: std::path::PathBuf, destination_directory: &str) -> std::io::Result<()> {
     if !Path::new(destination_directory).exists() {
         fs::create_dir_all(destination_directory)?;
@@ -90,6 +117,19 @@ fn move_file(source_path: std::path::PathBuf, destination_directory: &str) -> st
     Ok(())
 }
 
+/// Determines whether a file should be moved based on its existence in the destination directory.
+///
+/// # Parameters
+///
+/// * `source_path` - A reference to a `Path` representing the source path of the file to be checked.
+/// * `destination_directory` - A reference to a `&str` representing the destination directory where the file should be moved.
+///
+/// # Return Value
+///
+/// Returns a `bool` indicating whether the file should be moved.
+///
+/// * `true` - If the file does not exist in the destination directory.
+/// * `false` - If the file already exists in the destination directory.
 fn should_move_file(source_path: &Path, destination_directory: &str) -> bool {
     let file_name = match source_path.file_name() {
         Some(name) => name,
